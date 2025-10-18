@@ -21,7 +21,7 @@
         {
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
-          environment.systemPackages = with pkgs;[
+          environment.systemPackages = with pkgs; [
             neovim
             nixd
             nixfmt
@@ -35,6 +35,8 @@
             bat
             nil
             glab
+            kanata
+            gemini-cli
           ];
 
           fonts.packages = with pkgs; [
@@ -49,6 +51,8 @@
 
             onActivation = {
               cleanup = "zap";
+              autoUpdate = true;
+              upgrade = true;
             };
 
             taps = [
@@ -62,9 +66,11 @@
               "gnupg"
               "pinentry-mac"
               "pinentry-touchid"
+              "cocoapods"
             ];
 
             casks = [
+              "basecamp"
               "font-hack-nerd-font"
               "karabiner-elements"
               "spotify"
@@ -102,31 +108,35 @@
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
 
-          # system.defaults.NSGlobalDomain._HIHideMenuBar = true;
+          # environment.launchDaemons = {
+          #   "com.github.peam.Karabiner-VirtualHIDDevice-Daemon" = {
+          #     source = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+          #   };
+          # };
+          # services.karabineelements.enable = true;
 
-          environment.launchDaemons = {
-            "com.github.peam.Karabiner-VirtualHIDDevice-Daemon" = {
-              source = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+          launchd.user.agents.kanata = {
+            serviceConfig.ProgramArguments = [
+              "sudo"
+              "${pkgs.kanata}/bin/kanata"
+              "--cfg"
+              "/etc/nix-darwin/home-row-mod-advanced.kbd"
+            ];
+            serviceConfig = {
+              KeepAlive = true;
+              RunAtLoad = true;
+              StandardOutPath = "/Users/peam/Library/Logs/org.nixos.kanata/kanata.out.log";
+              StandardErrorPath = "/Users/peam/Library/Logs/org.nixos.kanata/kanata.err.log";
             };
           };
 
-          launchd.daemons = {
-            "com.github.peam.kanata" = {
-              script = ''
-                /Users/peam/.config/kanata/kanata_macos_cmd_allowed_arm64 --cfg /Users/peam/dotfiles/.config/kanata/home-row-mod-advanced.kbd
-              '';
-              serviceConfig = {
-                # EnvironmentVariables = {
-                #   NB_CONFIG = "/var/lib/netbird/config.json";
-                #   NB_LOG_FILE = "console";
-                # };
-                KeepAlive = true;
-                RunAtLoad = true;
-                StandardOutPath = "/var/log/kanata.out.log";
-                StandardErrorPath = "/var/log/kanata.err.log";
-              };
-            };
-          };
+          environment.etc."sudoers.d/kanata".source = pkgs.runCommand "sudoers-kanata" { } ''
+            KANATA_BIN="${pkgs.kanata}/bin/kanata"
+            SHASUM=$(sha256sum "$KANATA_BIN" | cut -d' ' -f1)
+            cat <<EOF >"$out"
+            %admin ALL=(root) NOPASSWD: sha256:$SHASUM $KANATA_BIN
+            EOF
+          '';
 
           services.yabai = {
             enable = true;
@@ -183,7 +193,6 @@
               yabai -m rule --add app="Spotify" space=^5
             '';
           };
-
 
           services.skhd = {
             enable = true;
