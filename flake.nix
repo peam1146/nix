@@ -60,36 +60,29 @@
             ];
 
             brews = [
-              "btop"
-              "gpg"
-              "gpg2"
-              "gnupg"
-              "pinentry-mac"
-              "pinentry-touchid"
-              "cocoapods"
+              "btop" # Resource monitor with beautiful UI
+              "gpg" # GNU Privacy Guard for encryption/signing
+              "gpg2" # GNU Privacy Guard version 2
+              "gnupg" # Complete GNU Privacy Guard suite
+              "pinentry-mac" # GPG passphrase entry dialog for macOS
+              "pinentry-touchid" # GPG passphrase entry using Touch ID
+              "cocoapods" # Dependency manager for iOS/macOS projects
+              "elixir" # Functional programming language for BEAM
             ];
 
             casks = [
-              "basecamp"
-              "font-hack-nerd-font"
-              "karabiner-elements"
-              "spotify"
-              "discord"
-              "figma"
-              "1password"
-              "shortcat"
-
-              # Terminal
-              "ghostty"
-
-              # Git GUI Client
-              "fork"
-
-              # Text Editor
-              "zed"
-
-              # show keystrokes on screen
-              "keycastr"
+              "basecamp" # Project management and collaboration tool
+              "font-hack-nerd-font" # Hack font with Nerd Font icons
+              "karabiner-elements" # Keyboard customization and remapping tool
+              "spotify" # Music streaming service
+              "discord" # Voice and text chat platform
+              "figma" # Collaborative design and prototyping tool
+              "1password" # Password manager and secure wallet
+              "shortcat" # Mouseless interface for clicking with keyboard
+              "ghostty" # Modern terminal emulator
+              "fork" # Git client with merge conflict resolution
+              "zed" # Collaborative code editor
+              "keycastr" # Displays keystrokes on screen for presentations
             ];
           };
 
@@ -181,6 +174,7 @@
               yabai -m rule --add app="^Karabiner-Elements$" manage=off
               yabai -m rule --add app="^Raycast$" manage=off
               yabai -m rule --add app="^1Password$" manage=off
+              yabai -m rule --add app="^Phone$" manage=off
 
               # ## move some apps automatically to specific spaces
               yabai -m rule --add app="Arc" space=^1
