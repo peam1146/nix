@@ -37,6 +37,10 @@
             glab
             kanata
             gemini-cli
+            just
+            zig_0_14
+            git-lfs
+            xz
           ];
 
           fonts.packages = with pkgs; [
@@ -67,7 +71,7 @@
               "pinentry-mac" # GPG passphrase entry dialog for macOS
               "pinentry-touchid" # GPG passphrase entry using Touch ID
               "cocoapods" # Dependency manager for iOS/macOS projects
-              "elixir" # Functional programming language for BEAM
+              "asdf" # Version manager for Elixir
             ];
 
             casks = [
