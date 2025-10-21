@@ -41,6 +41,8 @@
             zig_0_14
             git-lfs
             xz
+            volta
+            livebook
           ];
 
           fonts.packages = with pkgs; [
@@ -91,11 +93,6 @@
           };
 
           system.primaryUser = "peam";
-
-          # Enable alternative shell support in nix-darwin.
-          # programs.fish.enable = true;
-
-          # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
           # Used for backwards compatibility, please read the changelog before changing.
@@ -104,13 +101,6 @@
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
-
-          # environment.launchDaemons = {
-          #   "com.github.peam.Karabiner-VirtualHIDDevice-Daemon" = {
-          #     source = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
-          #   };
-          # };
-          # services.karabineelements.enable = true;
 
           launchd.user.agents.kanata = {
             serviceConfig.ProgramArguments = [
@@ -196,10 +186,6 @@
             enable = true;
             skhdConfig = builtins.readFile ./skhdrc;
           };
-
-          # services.sketchybar = {
-          #   enable = true;
-          # };
         };
     in
     {
