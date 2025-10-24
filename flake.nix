@@ -77,6 +77,7 @@
             ];
 
             casks = [
+              "utm"
               "basecamp" # Project management and collaboration tool
               "font-hack-nerd-font" # Hack font with Nerd Font icons
               "karabiner-elements" # Keyboard customization and remapping tool
