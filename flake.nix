@@ -27,7 +27,7 @@
     }:
     let
       configuration =
-        { pkgs, ... }:
+        { pkgs, config, ... }:
         {
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
@@ -54,11 +54,19 @@
             volta
             livebook
             btop
-            (callPackage ./sbar { })
+            sketchybar
+            sketchybar-app-font
+            # (callPackage ./sbar { })
           ];
 
           fonts.packages = with pkgs; [
             nerd-fonts.fira-code
+          ];
+
+          nixpkgs.overlays = [
+            (self: super: {
+              sbar-lua = self.callPackage ./sbar { };
+            })
           ];
 
           # Necessary for using flakes on this system.
@@ -206,19 +214,31 @@
 
           system.defaults.NSGlobalDomain._HIHideMenuBar = true;
 
-          imports = [
-            ./sketchybar
-          ];
-
-          custom-sketchybar = {
-            enable = true;
-            configPath = "${sketchybar-config-repo.outPath}/.config/sketchybar/sketchybarrc";
-            extraPackages = with pkgs; [
-              lua
-              switchaudio-osx
-              nowplaying-cli
+          launchd.user.agents.sketchybar = {
+            path =
+              with pkgs;
+              [
+                lua54Packages.lua
+                switchaudio-osx
+                nowplaying-cli
+              ]
+              ++ [ config.environment.systemPath ];
+            environment = {
+              LUA_CPATH = "${pkgs.sbar-lua}/bin/sketchybar.so";
+            };
+            serviceConfig.ProgramArguments = [
+              "${pkgs.sketchybar}/bin/sketchybar"
+              "--config"
+              "${sketchybar-config-repo.outPath}/.config/sketchybar/sketchybarrc"
             ];
+            serviceConfig = {
+              KeepAlive = true;
+              RunAtLoad = true;
+              StandardErrorPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.out.log";
+              StandardOutPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.err.log";
+            };
           };
+
         };
     in
     {
