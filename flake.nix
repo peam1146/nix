@@ -206,9 +206,13 @@
 
           system.defaults.NSGlobalDomain._HIHideMenuBar = true;
 
-          services.sketchybar = {
+          imports = [
+            ./sketchybar
+          ];
+
+          custom-sketchybar = {
             enable = true;
-            config = builtins.readFile "${sketchybar-config-repo.outPath}/.config/sketchybar/sketchybarrc";
+            configPath = "${sketchybar-config-repo.outPath}/.config/sketchybar/sketchybarrc";
             extraPackages = with pkgs; [
               lua
               switchaudio-osx
