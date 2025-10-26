@@ -55,12 +55,12 @@
             livebook
             btop
             sketchybar
-            sketchybar-app-font
             # (callPackage ./sbar { })
           ];
 
           fonts.packages = with pkgs; [
             nerd-fonts.fira-code
+            sketchybar-app-font
           ];
 
           nixpkgs.overlays = [
