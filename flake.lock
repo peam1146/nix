@@ -76,7 +76,42 @@
       "inputs": {
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "sbar-lua-repo": "sbar-lua-repo",
+        "sketchybar-config-repo": "sketchybar-config-repo"
+      }
+    },
+    "sbar-lua-repo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723484726,
+        "narHash": "sha256-F0UfNxHM389GhiPQ6/GFbeKQq5EvpiqQdvyf7ygzkPg=",
+        "owner": "FelixKratz",
+        "repo": "SbarLua",
+        "rev": "437bd2031da38ccda75827cb7548e7baa4aa9978",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FelixKratz",
+        "repo": "SbarLua",
+        "type": "github"
+      }
+    },
+    "sketchybar-config-repo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759585760,
+        "narHash": "sha256-oVo936V0BXf5FkP+xrU9BjV7R63bByxrC060en1u7Io=",
+        "owner": "FelixKratz",
+        "repo": "dotfiles",
+        "rev": "67ad686ea6d4c29ccd54fdaa42cdf35f37a7219c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FelixKratz",
+        "repo": "dotfiles",
+        "rev": "67ad686ea6d4c29ccd54fdaa42cdf35f37a7219c",
+        "type": "github"
       }
     }
   },

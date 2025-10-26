@@ -6,6 +6,14 @@
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    sketchybar-config-repo = {
+      url = "github:FelixKratz/dotfiles/67ad686ea6d4c29ccd54fdaa42cdf35f37a7219c";
+      flake = false;
+    };
+    sbar-lua-repo = {
+      url = "github:FelixKratz/SbarLua";
+      flake = false;
+    };
   };
 
   outputs =
@@ -14,6 +22,8 @@
       nix-darwin,
       nixpkgs,
       nix-homebrew,
+      sketchybar-config-repo,
+      sbar-lua-repo,
     }:
     let
       configuration =
@@ -43,6 +53,8 @@
             xz
             volta
             livebook
+            btop
+            (callPackage ./sbar { })
           ];
 
           fonts.packages = with pkgs; [
@@ -66,7 +78,6 @@
             ];
 
             brews = [
-              "btop" # Resource monitor with beautiful UI
               "gpg" # GNU Privacy Guard for encryption/signing
               "gpg2" # GNU Privacy Guard version 2
               "gnupg" # Complete GNU Privacy Guard suite
@@ -90,6 +101,11 @@
               "fork" # Git client with merge conflict resolution
               "zed" # Collaborative code editor
               "keycastr" # Displays keystrokes on screen for presentations
+
+              # fonts
+              "sf-symbols"
+              "font-sf-mono"
+              "font-sf-pro"
             ];
           };
 
@@ -157,7 +173,7 @@
               mouse_action1 = "move";
               mouse_action2 = "resize";
               mouse_drop_action = "swap";
-              top_padding = 12;
+              top_padding = 48;
               bottom_padding = 12;
               left_padding = 12;
               right_padding = 12;
@@ -165,11 +181,11 @@
             };
 
             extraConfig = ''
-              yabai -m rule --add app="^System Settings$" manage=off
-              yabai -m rule --add app="^Karabiner-Elements$" manage=off
-              yabai -m rule --add app="^Raycast$" manage=off
-              yabai -m rule --add app="^1Password$" manage=off
-              yabai -m rule --add app="^Phone$" manage=off
+              yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor|Phone|1Password|Raycast|Karabiner)$" manage=off
+              yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+              yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+              yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+              yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
               # ## move some apps automatically to specific spaces
               yabai -m rule --add app="Arc" space=^1
@@ -186,6 +202,18 @@
           services.skhd = {
             enable = true;
             skhdConfig = builtins.readFile ./skhdrc;
+          };
+
+          system.defaults.NSGlobalDomain._HIHideMenuBar = true;
+
+          services.sketchybar = {
+            enable = true;
+            config = builtins.readFile "${sketchybar-config-repo.outPath}/.config/sketchybar/sketchybarrc";
+            extraPackages = with pkgs; [
+              lua
+              switchaudio-osx
+              nowplaying-cli
+            ];
           };
         };
     in
