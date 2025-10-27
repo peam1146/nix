@@ -5,15 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    sketchybar-config-repo = {
-      url = "github:FelixKratz/dotfiles/67ad686ea6d4c29ccd54fdaa42cdf35f37a7219c";
-      flake = false;
-    };
-    sbar-lua-repo = {
-      url = "github:FelixKratz/SbarLua";
-      flake = false;
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -21,9 +14,7 @@
       self,
       nix-darwin,
       nixpkgs,
-      nix-homebrew,
-      sketchybar-config-repo,
-      sbar-lua-repo,
+      home-manager,
     }:
     let
       configuration =
@@ -55,7 +46,6 @@
             livebook
             btop
             sketchybar
-            # (callPackage ./sbar { })
           ];
 
           fonts.packages = with pkgs; [
@@ -66,6 +56,25 @@
           nixpkgs.overlays = [
             (self: super: {
               sbar-lua = self.callPackage ./sbar { };
+            })
+            (self: super: {
+              sketchybar-helpers = self.stdenv.mkDerivation {
+                name = "sketchybar-helpers";
+                src = pkgs.fetchFromGitHub {
+                  owner = "FelixKratz";
+                  repo = "dotfiles";
+                  rev = "67ad686ea6d4c29ccd54fdaa42cdf35f37a7219c";
+                  hash = "sha256-oVo936V0BXf5FkP+xrU9BjV7R63bByxrC060en1u7Io=";
+                };
+                buildPhase = ''
+                  echo "Building sketchybar helper..."
+                  cd .config/sketchybar/helpers && make all
+                  cd ../../../
+                '';
+                installPhase = ''
+                  mv .config/sketchybar $out
+                '';
+              };
             })
           ];
 
@@ -150,6 +159,18 @@
             EOF
           '';
 
+          security.pam.services.sudo_local.touchIdAuth = true;
+
+          services.jankyborders = {
+            enable = true;
+            style = "round";
+            width = 6.0;
+            hidpi = true;
+            active_color = "0xc0e2e2e3";
+            inactive_color = "0xc02c2e34";
+            background_color = "0x302c2e34";
+          };
+
           services.yabai = {
             enable = true;
             enableScriptingAddition = true;
@@ -181,15 +202,17 @@
               mouse_action1 = "move";
               mouse_action2 = "resize";
               mouse_drop_action = "swap";
-              top_padding = 48;
+              top_padding = 16;
               bottom_padding = 12;
               left_padding = 12;
               right_padding = 12;
+              external_bar = "all:40:0";
               window_gap = 12;
+              menubar_opacity = 0.0;
             };
 
             extraConfig = ''
-              yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor|Phone|1Password|Raycast|Karabiner)$" manage=off
+              yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor|Phone|1Password|Raycast|Karabiner|AlDente)$" manage=off
               yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
               yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
               yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
@@ -229,7 +252,7 @@
             serviceConfig.ProgramArguments = [
               "${pkgs.sketchybar}/bin/sketchybar"
               "--config"
-              "${sketchybar-config-repo.outPath}/.config/sketchybar/sketchybarrc"
+              "${pkgs.sketchybar-helpers}/sketchybarrc"
             ];
             serviceConfig = {
               KeepAlive = true;
@@ -247,15 +270,14 @@
       darwinConfigurations."Supakarins-MacBook-Pro" = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
-          nix-homebrew.darwinModules.nix-homebrew
+          home-manager.darwinModules.home-manager
           {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = true;
-              user = "peam";
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.peam = import ./home.nix;
 
-              autoMigrate = true;
-            };
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
           }
         ];
       };
