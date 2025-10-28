@@ -51,7 +51,6 @@
             btop
             sketchybar
             jira-cli-go
-            sbarlua
           ];
 
           fonts.packages = with pkgs; [
@@ -60,9 +59,6 @@
           ];
 
           nixpkgs.overlays = [
-            # (self: super: {
-            #   sbar-lua = self.callPackage ./sbar { };
-            # })
             (self: super: {
               sketchybar-helpers = self.stdenv.mkDerivation {
                 name = "sketchybar-helpers";
@@ -85,7 +81,7 @@
           ];
 
           # Necessary for using flakes on this system.
-          nix.settings.experimental-features = "nix-command flakes";
+          nix.settings.experimental-features = "nix-command flakes pipe-operators";
 
           homebrew = {
             enable = true;
