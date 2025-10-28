@@ -1,8 +1,10 @@
 { config, pkgs, ... }:
+let
+  username = "peam";
+in
 
 {
-  home.username = "peam";
-  home.homeDirectory = "/Users/peam";
+  home.username = username;
   home.stateVersion = "25.05";
 
   # Makes sense for user specific applications that shouldn't be available system-wide
@@ -26,10 +28,8 @@
     # ".config/sketchybar".source = ~/dotfiles/sketchybar;
     # ".config/nushell".source = ~/dotfiles/nushell;
   };
-
   home.sessionVariables = {
   };
-
   home.sessionPath = [
     "/run/current-system/sw/bin"
     "$HOME/.nix-profile/bin"

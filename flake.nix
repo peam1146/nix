@@ -10,7 +10,7 @@
   };
 
   outputs =
-    inputs@{
+    {
       self,
       nix-darwin,
       nixpkgs,
@@ -18,7 +18,11 @@
     }:
     let
       configuration =
-        { pkgs, config, ... }:
+        {
+          pkgs,
+          config,
+          ...
+        }:
         {
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
@@ -46,6 +50,8 @@
             livebook
             btop
             sketchybar
+            jira-cli-go
+            sbarlua
           ];
 
           fonts.packages = with pkgs; [
@@ -54,9 +60,9 @@
           ];
 
           nixpkgs.overlays = [
-            (self: super: {
-              sbar-lua = self.callPackage ./sbar { };
-            })
+            # (self: super: {
+            #   sbar-lua = self.callPackage ./sbar { };
+            # })
             (self: super: {
               sketchybar-helpers = self.stdenv.mkDerivation {
                 name = "sketchybar-helpers";
@@ -247,7 +253,7 @@
               ]
               ++ [ config.environment.systemPath ];
             environment = {
-              LUA_CPATH = "${pkgs.sbar-lua}/bin/sketchybar.so";
+              LUA_CPATH = "${pkgs.sbarlua}/lib/lua/5.4/sketchybar.so";
             };
             serviceConfig.ProgramArguments = [
               "${pkgs.sketchybar}/bin/sketchybar"
@@ -261,12 +267,9 @@
               StandardOutPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.err.log";
             };
           };
-
         };
     in
     {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#Supakarins-MacBook-Pro
       darwinConfigurations."Supakarins-MacBook-Pro" = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
@@ -274,10 +277,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.peam = import ./home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
+            users.users.peam.home = "/Users/peam";
+            home-manager.users.peam = ./home.nix;
           }
         ];
       };
