@@ -274,7 +274,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             users.users.peam.home = "/Users/peam";
-            home-manager.users.peam = ./home.nix;
+            home-manager.users.peam = ./home-manager/home.nix;
           }
         ];
       };

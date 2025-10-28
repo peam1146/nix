@@ -2,8 +2,11 @@
 let
   username = "peam";
 in
-
 {
+  imports = [
+    ../modules/zinit
+  ];
+
   home.username = username;
   home.stateVersion = "25.05";
 
@@ -70,27 +73,49 @@ in
 
   programs.home-manager.enable = true;
 
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-  };
+  # programs.starship = {
+  #   enable = true;
+  #   enableZshIntegration = true;
+  # };
 
   programs.zsh = {
     enable = true;
     syntaxHighlighting.enable = true;
-    enableCompletion = true;
+    enableCompletion = false;
+    oh-my-zsh.enable = true;
     autosuggestion.enable = true;
-    history.size = -1;
+    history.size = 1000000;
     history.saveNoDups = true;
+
+    envExtra = ''
+      skip_global_compinit=1
+    '';
+
+    zinit = {
+      enable = true;
+      plugins = [
+        "joshskidmore/zsh-fzf-history-search"
+        "hlissner/zsh-autopair"
+        "akash329d/zsh-alias-finder"
+        "chitoku-k/fzf-zsh-completions"
+        {
+          repo = "romkatv/powerlevel10k";
+          depth = 1;
+        }
+      ];
+    };
 
     initContent = ''
       # TODO: migrate to SOPS
       source $HOME/.secret.sh
+      source ${pkgs.zsh-autocomplete}/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
       # create hash for all directory in work
       for d in $HOME/work/*; do
         hash -d $(basename $d)="$d"
       done
+
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
       ${builtins.readFile ./scripts/jira-hack.sh}
     '';
