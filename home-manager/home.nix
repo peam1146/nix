@@ -10,26 +10,12 @@ in
   home.username = username;
   home.stateVersion = "25.05";
 
-  # Makes sense for user specific applications that shouldn't be available system-wide
-  home.packages = [
-  ];
-
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    # ".zshrc".source = ~/dotfiles/zshrc/.zshrc;
-    # ".config/wezterm".source = ~/dotfiles/wezterm;
-    # ".config/skhd".source = ~/dotfiles/skhd;
-    # ".config/starship".source = ~/dotfiles/starship;
-    # ".config/zellij".source = ~/dotfiles/zellij;
-    # ".config/nvim".source = ~/dotfiles/nvim;
-    # ".config/nix".source = ~/dotfiles/nix;
-    # ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
-    # ".config/tmux".source = ~/dotfiles/tmux;
-    # ".config/ghostty".source = ~/dotfiles/ghostty;
-    # ".config/aerospace".source = ~/dotfiles/aerospace;
-    # ".config/sketchybar".source = ~/dotfiles/sketchybar;
-    # ".config/nushell".source = ~/dotfiles/nushell;
+    ".config/nvim".source = ./config/nvim;
+    ".config/lvim".source = ./config/lvim;
+    ".config/neofetch".source = ./config/neofetch;
   };
 
   home.sessionVariables = {
@@ -73,10 +59,10 @@ in
 
   programs.home-manager.enable = true;
 
-  # programs.starship = {
-  #   enable = true;
-  #   enableZshIntegration = true;
-  # };
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
   programs.zsh = {
     enable = true;
@@ -85,6 +71,14 @@ in
     autosuggestion.enable = true;
     history.size = 1000000;
     history.saveNoDups = true;
+
+    plugins = [
+      {
+        name = "jira-git-town-hack";
+        src = ./scripts;
+        file = "jira-hack.sh";
+      }
+    ];
 
     envExtra = ''
       skip_global_compinit=1
@@ -98,8 +92,7 @@ in
         "akash329d/zsh-alias-finder"
         "chitoku-k/fzf-zsh-completions"
         {
-          repo = "romkatv/powerlevel10k";
-          depth = 1;
+          repo = "marlonrichert/zsh-autocomplete";
           wait = null;
         }
       ];
@@ -108,16 +101,11 @@ in
     initContent = ''
       # TODO: migrate to SOPS
       source $HOME/.secret.sh
-      source ${pkgs.zsh-autocomplete}/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
       # create hash for all directory in work
       for d in $HOME/work/*; do
         hash -d $(basename $d)="$d"
       done
-
-      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-      ${builtins.readFile ./scripts/jira-hack.sh}
     '';
 
     shellAliases = {

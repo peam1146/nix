@@ -51,6 +51,7 @@
             btop
             sketchybar
             jira-cli-go
+            stow
           ];
 
           fonts.packages = with pkgs; [

@@ -1,0 +1,24 @@
+return {
+  -- {
+  --   "folke/which-key.nvim",
+  --   opts = {
+  --     defaults = {
+  --       ["<leader>G"] = { name = "+Go" },
+  --       ["<leader>h"] = { name = "+harpoon" },
+  --       ["<leader>op"] = { name = "+Pull Request" },
+  --       ["<leader>oi"] = { name = "+Issue" },
+  --       ["<leader>or"] = { name = "+Repository" },
+  --       ["<leader>og"] = { name = "+Gist" },
+  --       ["<leader>oc"] = { name = "+Comment" },
+  --       ["<leader>ot"] = { name = "+Thread" },
+  --       ["<leader>ol"] = { name = "+Label" },
+  --       ["<leader>oa"] = { name = "+Assignee" },
+  --       ["<leader>orv"] = { name = "+Reviewer" },
+  --       ["<leader>or+"] = { name = "+Reactions" },
+  --       ["<leader>oca"] = { name = "+Card" },
+  --       ["<leader>orvs"] = { name = "+Review" },
+  --       ["<leader>os"] = { name = "+Search" },
+  --     },
+  --   },
+  -- },
+}
