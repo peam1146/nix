@@ -12,11 +12,10 @@ let
     plugins:
     plugins
     |> lib.lists.imap1 (
-      index: plugin: ''
-        ${optionalString plugin.isLight "light-mode"} ${
+      index: plugin:
+      "  ${optionalString plugin.isLight "light-mode"} ${
           optionalString (plugin.depth != 0) "depth\"${builtins.toString plugin.depth}\""
-        } ${plugin.repo} ${lib.optionalString (builtins.length plugins != index) "\\"}
-      ''
+        } ${plugin.repo} ${lib.optionalString (builtins.length plugins != index) "\\"}\n"
     )
     |> lib.concatStrings
   );
@@ -24,8 +23,8 @@ let
   zinitForSyntaxBuilder = (
     wait: plugins:
     lib.optionalString (plugins != [ ]) ''
-      zinit lucid wait"${wait}" for \
-        ${zinitPluginStr plugins}
+      zinit lucid ${lib.optionalString (wait != "") "wait\"${wait}\" "}for \
+            ${zinitPluginStr plugins}
     ''
   );
 
@@ -76,7 +75,7 @@ in
               '';
             };
             wait = lib.mkOption {
-              type = lib.types.int;
+              type = lib.types.nullOr lib.types.int;
               default = 0;
               description = "Turbo mode is the key to performance. It can be loaded asynchronously, which makes a huge difference when the amount of plugins increases.";
             };

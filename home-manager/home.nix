@@ -101,6 +101,7 @@ in
         {
           repo = "romkatv/powerlevel10k";
           depth = 1;
+          wait = null;
         }
       ];
     };
