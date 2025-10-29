@@ -82,7 +82,6 @@ in
     enable = true;
     syntaxHighlighting.enable = true;
     enableCompletion = false;
-    oh-my-zsh.enable = true;
     autosuggestion.enable = true;
     history.size = 1000000;
     history.saveNoDups = true;

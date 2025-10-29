@@ -24,7 +24,7 @@ let
     wait: plugins:
     lib.optionalString (plugins != [ ]) ''
       zinit lucid ${lib.optionalString (wait != "") "wait\"${wait}\" "}for \
-            ${zinitPluginStr plugins}
+      ${zinitPluginStr plugins}
     ''
   );
 
