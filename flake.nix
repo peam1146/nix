@@ -63,19 +63,14 @@
             (self: super: {
               sketchybar-helpers = self.stdenv.mkDerivation {
                 name = "sketchybar-helpers";
-                src = pkgs.fetchFromGitHub {
-                  owner = "FelixKratz";
-                  repo = "dotfiles";
-                  rev = "67ad686ea6d4c29ccd54fdaa42cdf35f37a7219c";
-                  hash = "sha256-oVo936V0BXf5FkP+xrU9BjV7R63bByxrC060en1u7Io=";
-                };
+                src = ./home-manager/config;
                 buildPhase = ''
                   echo "Building sketchybar helper..."
-                  cd .config/sketchybar/helpers && make all
-                  cd ../../../
+                  cd sketchybar/helpers && make all
+                  cd ../../
                 '';
                 installPhase = ''
-                  mv .config/sketchybar $out
+                  mv sketchybar $out
                 '';
               };
             })
@@ -247,10 +242,11 @@
                 lua54Packages.lua
                 switchaudio-osx
                 nowplaying-cli
+                lua54Packages.cjson
               ]
               ++ [ config.environment.systemPath ];
             environment = {
-              LUA_CPATH = "${pkgs.sbarlua}/lib/lua/5.4/sketchybar.so";
+              LUA_CPATH = "${pkgs.lua54Packages.cjson}/lib/lua/5.4/?.so;${pkgs.sbarlua}/lib/lua/5.4/sketchybar.so;$LUA_CPATH";
             };
             serviceConfig.ProgramArguments = [
               "${pkgs.sketchybar}/bin/sketchybar"
