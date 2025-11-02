@@ -211,7 +211,7 @@
               right_padding = 12;
               external_bar = "all:40:0";
               window_gap = 12;
-              menubar_opacity = 0.0;
+              # menubar_opacity = 0.0;
             };
 
             extraConfig = ''

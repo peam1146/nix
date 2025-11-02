@@ -13,7 +13,10 @@ in
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".config/nvim".source = ./config/nvim;
+    ".config/nvim" = {
+      source = ./config/nvim;
+      recursive = true;
+    };
     ".config/lvim".source = ./config/lvim;
     ".config/neofetch".source = ./config/neofetch;
   };
