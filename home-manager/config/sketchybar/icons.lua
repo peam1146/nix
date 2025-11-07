@@ -41,6 +41,7 @@ local icons = {
             play_pause = "􀊈",
         },
         control_center = "􀜊",
+        keyboard = "􀇳",
     },
 
     -- Alternative NerdFont icons

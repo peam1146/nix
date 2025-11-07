@@ -1,0 +1,6 @@
+{
+    "diagnostics.globals": [
+        "sbar",
+        "exec_shell"
+    ]
+}

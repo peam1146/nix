@@ -100,6 +100,6 @@ alt - 9 : yabai -m space --focus 9;
 # stop/start/restart yabai
 ctrl + alt - q : yabai --stop-service
 ctrl + alt - s : yabai --start-service
-ctrl + alt - r : yabai --restart-service
+ctrl + alt - r : sketchybar --reload && yabai --restart-service
 
 # zen mode

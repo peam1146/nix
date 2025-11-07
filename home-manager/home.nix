@@ -19,6 +19,7 @@ in
     };
     ".config/lvim".source = ./config/lvim;
     ".config/neofetch".source = ./config/neofetch;
+    ".config/starship.toml".source = ./config/starship.toml;
   };
 
   home.sessionVariables = {

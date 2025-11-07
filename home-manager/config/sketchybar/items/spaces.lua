@@ -6,18 +6,6 @@ local cjson = require("cjson")
 
 local spaces = {}
 
-local function exec_shell(cmd)
-    local file = io.popen(cmd)
-
-    if not file then
-        return
-    end
-
-    local output = file:read("*a")
-    file:close()
-    return output
-end
-
 local displays = cjson.decode(exec_shell('yabai -m query --spaces'))
 
 for i, value in ipairs(displays) do

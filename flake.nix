@@ -167,6 +167,7 @@
             active_color = "0xc0e2e2e3";
             inactive_color = "0xc02c2e34";
             background_color = "0x302c2e34";
+            blur_radius = 5.0;
           };
 
           services.yabai = {
@@ -216,15 +217,28 @@
               yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
               yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
+              ${
+                pkgs.lua54Packages.lua.withPackages (ps: with ps; [ cjson ])
+              }/bin/lua ${./scripts/enusure_yabai_space.lua}
+
               # ## move some apps automatically to specific spaces
-              yabai -m rule --add app="Arc" space=^1
+              yabai -m space 1 --label "Browser"
+              yabai -m space 2 --label "Terminal"
+              yabai -m space 3 --label "Coding"
+              yabai -m space 4 --label "Communication"
+              yabai -m space 5 --label "Entertainment"
+              yabai -m space 6 --label "Random"
+
+              yabai -m rule --add app="Arc" space=1
               yabai -m rule --add app="WezTerm" space=2
               yabai -m rule --add app="Ghostty" space=2
               yabai -m rule --add app="Code" space=3
               yabai -m rule --add app="Windsurf" space=3
               yabai -m rule --add app="Zed" space=3
-              yabai -m rule --add app="Discord" space=^4
-              yabai -m rule --add app="Spotify" space=^5
+              yabai -m rule --add app="Discord" space=4
+              yabai -m rule --add app="Instagram" space=5
+              yabai -m rule --add app="Spotify" space=5
+              yabai -m rule --add app="YouTube" space=5
             '';
           };
 
