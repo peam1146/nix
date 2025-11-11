@@ -3,7 +3,6 @@
 [bun]
 format = '\[[$symbol($version)]($style)\]'
 
-
 [c]
 format = '\[[$symbol($version(-$name))]($style)\]'
 
@@ -173,6 +172,7 @@ format = '\[[as $symbol]($style)\]'
 format = '\[[$symbol($version)]($style)\]'
 
 [terraform]
+disabled = true
 format = '\[[$symbol$workspace]($style)\]'
 
 [time]
@@ -192,3 +192,9 @@ format = '\[[$symbol($version)]($style)\]'
 
 [solidity]
 format = '\[[$symbol($version)]($style)\]'
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true

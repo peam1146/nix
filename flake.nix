@@ -217,9 +217,7 @@
               yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
               yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
-              ${
-                pkgs.lua54Packages.lua.withPackages (ps: with ps; [ cjson ])
-              }/bin/lua ${./scripts/enusure_yabai_space.lua}
+              ${builtins.readFile ./scripts/ensure_yabai_space.sh}
 
               # ## move some apps automatically to specific spaces
               yabai -m space 1 --label "Browser"
