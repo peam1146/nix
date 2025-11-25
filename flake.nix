@@ -53,6 +53,7 @@
             jira-cli-go
             stow
             rustup
+            opencode
           ];
 
           fonts.packages = with pkgs; [
