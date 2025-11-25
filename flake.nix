@@ -21,6 +21,7 @@
         {
           pkgs,
           config,
+          lib,
           ...
         }:
         {
@@ -35,7 +36,6 @@
             gh
             git-town
             go
-            fvm
             fzf
             bat
             nil
@@ -52,6 +52,7 @@
             sketchybar
             jira-cli-go
             stow
+            rustup
           ];
 
           fonts.packages = with pkgs; [
@@ -90,6 +91,7 @@
 
             taps = [
               "jorgelbg/tap"
+              "ariga/tap"
             ];
 
             brews = [
@@ -100,6 +102,7 @@
               "pinentry-touchid" # GPG passphrase entry using Touch ID
               "cocoapods" # Dependency manager for iOS/macOS projects
               "asdf" # Version manager for Elixir
+              "ariga/tap/atlas"
             ];
 
             casks = [
@@ -116,6 +119,9 @@
               "fork" # Git client with merge conflict resolution
               "zed" # Collaborative code editor
               "keycastr" # Displays keystrokes on screen for presentations
+              # "obs"
+              # "rustdesk"
+              # "deskpad"
 
               # fonts
               "sf-symbols"
@@ -210,34 +216,61 @@
               # menubar_opacity = 0.0;
             };
 
-            extraConfig = ''
-              yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor|Phone|1Password|Raycast|Karabiner|AlDente)$" manage=off
-              yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
-              yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
-              yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
-              yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
+            extraConfig =
+              let
+                excludes = [
+                  "LuLu"
+                  "Calculator"
+                  "Software Update"
+                  "Dictionary"
+                  "VLC"
+                  "System Preferences"
+                  "System Settings"
+                  "zoom.us"
+                  "Photo Booth"
+                  "Archive Utility"
+                  "Python"
+                  "LibreOffice"
+                  "App Store"
+                  "Steam"
+                  "Alfred"
+                  "Activity Monitor"
+                  "Phone"
+                  "1Password"
+                  "Raycast"
+                  "Karabiner"
+                  "AlDente"
+                  "CleanMyMac"
+                ];
+              in
+              ''
+                yabai -m rule --add app="^(${lib.strings.concatStringsSep "|" excludes})$" manage=off
+                yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+                yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+                yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+                yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
-              ${builtins.readFile ./scripts/ensure_yabai_space.sh}
+                ${builtins.readFile ./scripts/ensure_yabai_space.sh}
 
-              # ## move some apps automatically to specific spaces
-              yabai -m space 1 --label "Browser"
-              yabai -m space 2 --label "Terminal"
-              yabai -m space 3 --label "Coding"
-              yabai -m space 4 --label "Communication"
-              yabai -m space 5 --label "Entertainment"
-              yabai -m space 6 --label "Random"
+                # ## move some apps automatically to specific spaces
+                yabai -m space 1 --label "Browser"
+                yabai -m space 2 --label "Terminal"
+                yabai -m space 3 --label "Coding"
+                yabai -m space 4 --label "Communication"
+                yabai -m space 5 --label "Entertainment"
+                yabai -m space 6 --label "Random"
 
-              yabai -m rule --add app="Arc" space=1
-              yabai -m rule --add app="WezTerm" space=2
-              yabai -m rule --add app="Ghostty" space=2
-              yabai -m rule --add app="Code" space=3
-              yabai -m rule --add app="Windsurf" space=3
-              yabai -m rule --add app="Zed" space=3
-              yabai -m rule --add app="Discord" space=4
-              yabai -m rule --add app="Instagram" space=5
-              yabai -m rule --add app="Spotify" space=5
-              yabai -m rule --add app="YouTube" space=5
-            '';
+                yabai -m rule --add app="Arc" space=1
+                yabai -m rule --add app="WezTerm" space=2
+                yabai -m rule --add app="Ghostty" space=2
+                yabai -m rule --add app="Code" space=3
+                yabai -m rule --add app="Windsurf" space=3
+                yabai -m rule --add app="Zed" space=3
+                yabai -m rule --add app="Discord" space=4
+                yabai -m rule --add app="Instagram" space=5
+                yabai -m rule --add app="Spotify" space=5
+                yabai -m rule --add app="YouTube" space=5
+              '';
           };
 
           services.skhd = {

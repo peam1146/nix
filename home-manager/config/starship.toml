@@ -1,4 +1,4 @@
-"$schema" = 'https://starship.rs/config-schema.json'
+"$schema" = "https://starship.rs/config-schema.json"
 
 [bun]
 format = '\[[$symbol($version)]($style)\]'
@@ -107,6 +107,7 @@ format = '\[[$symbol($version)]($style)\]'
 
 [nix_shell]
 format = '\[[$symbol$state( \($name\))]($style)\]'
+heuristic = true
 
 [nodejs]
 format = '\[[$symbol($version)]($style)\]'

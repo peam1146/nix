@@ -22,6 +22,28 @@ in
     ".config/starship.toml".source = ./config/starship.toml;
   };
 
+  # home.packages = with pkgs; [
+  #   (writeShellApplication {
+  #     name = "nst";
+  #     runtimeInputs = with pkgs; [
+  #       fzf
+  #       nix-search-tv
+  #     ];
+  #     text =
+  #       builtins.readFile "${pkgs.nix-search-tv.src}/nixpkgs.sh"
+  #       |>
+  #         builtins.replaceStrings
+  #           [
+  #             "NIX_SHELL_CMD='nix-shell --run $SHELL -p $(echo \"{}\" | sed \"s:nixpkgs/::g\"'"
+  #             "NIX_SHELL_CMD=\"$NIX_SHELL_CMD | tr -d \\\"\\\'\\\")\""
+  #           ]
+  #           [
+  #             "NIX_SHELL_CMD=\"nix-shell --run $SHELL -p $(echo \\\"{}\\\" | sed \\\"s:nixpkgs/::g\\\"\""
+  #             "NIX_SHELL_CMD=\"$NIX_SHELL_CMD | tr -d \\\"\\\'\\\")\""
+  #           ];
+  #   })
+  # ];
+
   home.sessionVariables = {
     EDITOR = "windsurf";
     GOPATH = "$HOME/go";
@@ -57,6 +79,7 @@ in
     "$HOME/Library/pnpm"
     "$HOME/.bun/bin"
     "$HOME/.codeium/windsurf/bin"
+    "$HOME/.antigravity/antigravity/bin"
     "$HOME/perl5/bin"
     "$HOME/.lmstudio/bin"
   ];
@@ -66,6 +89,17 @@ in
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.nix-search-tv = {
+    enable = true;
+    settings = {
+      experimental = {
+        render_docs_indexes = {
+          plasma = "https://nix-community.github.io/plasma-manager/options.xhtml";
+        };
+      };
+    };
   };
 
   programs.zsh = {
@@ -81,6 +115,16 @@ in
         name = "jira-git-town-hack";
         src = ./scripts;
         file = "jira-hack.sh";
+      }
+      {
+        name = "zsh-nix-shell";
+        file = "nix-shell.plugin.zsh";
+        src = pkgs.fetchFromGitHub {
+          owner = "chisui";
+          repo = "zsh-nix-shell";
+          rev = "v0.8.0";
+          sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
+        };
       }
     ];
 
