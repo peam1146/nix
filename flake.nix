@@ -54,6 +54,8 @@
             stow
             rustup
             opencode
+            ripgrep
+            fvm
           ];
 
           fonts.packages = with pkgs; [
