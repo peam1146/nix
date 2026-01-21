@@ -150,6 +150,8 @@ in
       # TODO: migrate to SOPS
       source $HOME/.secret.sh
 
+      eval "$(wt config shell init zsh)"
+
       # create hash for all directory in work
       for d in $HOME/work/*; do
         hash -d $(basename $d)="$d"
@@ -164,6 +166,7 @@ in
       g = "git";
       tableplus = "open -a TablePlus";
       k = "kubectl";
+      claude = "zai";
     };
 
     dirHashes = {

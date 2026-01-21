@@ -6,6 +6,7 @@ jhack() {
 #    - '--no-headers' and '--plain' are critical for scripting.
 local issue=$(jira issue list \
     -a $(jira me) \
+    -q "project = NPOS" \
     -s"To Do" \
     --plain \
     --no-headers \
@@ -58,6 +59,7 @@ jswitch() {
     #    - '--no-headers' and '--plain' are critical for scripting.
     local issue=$(jira issue list \
         -a $(jira me) \
+        -q "project = NPOS" \
         -s "In Progress" \
         -s "In Review" \
         --plain \
@@ -99,5 +101,5 @@ jswitch() {
     # Remove a trailing hyphen one more time in case 'cut' created one
     branch_name=$(echo "$branch_name" | sed -e 's/-$//')
 
-    g switch "${branch_name}"
+    git switch "${branch_name}"
 }

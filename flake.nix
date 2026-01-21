@@ -2,6 +2,7 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,6 +16,7 @@
       nix-darwin,
       nixpkgs,
       home-manager,
+      nix-homebrew,
     }:
     let
       configuration =
@@ -43,42 +45,47 @@
             kanata
             gemini-cli
             just
-            zig_0_14
+            zig
             git-lfs
             xz
             volta
             livebook
             btop
-            sketchybar
+            # sketchybar
             jira-cli-go
             stow
             rustup
-            opencode
             ripgrep
             fvm
+            httpie
+            watch
+            uv
+            vscode
           ];
+
+          nixpkgs.config.allowUnfree = true;
 
           fonts.packages = with pkgs; [
             nerd-fonts.fira-code
-            sketchybar-app-font
+            # sketchybar-app-font
           ];
 
-          nixpkgs.overlays = [
-            (self: super: {
-              sketchybar-helpers = self.stdenv.mkDerivation {
-                name = "sketchybar-helpers";
-                src = ./home-manager/config;
-                buildPhase = ''
-                  echo "Building sketchybar helper..."
-                  cd sketchybar/helpers && make all
-                  cd ../../
-                '';
-                installPhase = ''
-                  mv sketchybar $out
-                '';
-              };
-            })
-          ];
+          # nixpkgs.overlays = [
+          #   (self: super: {
+          #     sketchybar-helpers = self.stdenv.mkDerivation {
+          #       name = "sketchybar-helpers";
+          #       src = ./home-manager/config;
+          #       buildPhase = ''
+          #         echo "Building sketchybar helper..."
+          #         cd sketchybar/helpers && make all
+          #         cd ../../
+          #       '';
+          #       installPhase = ''
+          #         mv sketchybar $out
+          #       '';
+          #     };
+          #   })
+          # ];
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes pipe-operators";
@@ -95,6 +102,8 @@
             taps = [
               "jorgelbg/tap"
               "ariga/tap"
+              "tw93/tap"
+              "k1LoW/tap"
             ];
 
             brews = [
@@ -106,6 +115,9 @@
               "cocoapods" # Dependency manager for iOS/macOS projects
               "asdf" # Version manager for Elixir
               "ariga/tap/atlas"
+              "tw93/tap/mole"
+              "k1LoW/tap/git-wt"
+              "max-sixty/worktrunk/wt"
             ];
 
             casks = [
@@ -143,28 +155,16 @@
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
 
-          launchd.user.agents.kanata = {
-            serviceConfig.ProgramArguments = [
-              "sudo"
-              "${pkgs.kanata}/bin/kanata"
-              "--cfg"
-              "/etc/nix-darwin/home-row-mod-advanced.kbd"
-            ];
+          launchd.daemons.kanata = {
+            command = "${pkgs.kanata}/bin/kanata --cfg ${./home-row-mod-advanced.kbd}";
             serviceConfig = {
               KeepAlive = true;
               RunAtLoad = true;
               StandardOutPath = "/Users/peam/Library/Logs/org.nixos.kanata/kanata.out.log";
               StandardErrorPath = "/Users/peam/Library/Logs/org.nixos.kanata/kanata.err.log";
+              UserName = "root";
             };
           };
-
-          environment.etc."sudoers.d/kanata".source = pkgs.runCommand "sudoers-kanata" { } ''
-            KANATA_BIN="${pkgs.kanata}/bin/kanata"
-            SHASUM=$(sha256sum "$KANATA_BIN" | cut -d' ' -f1)
-            cat <<EOF >"$out"
-            %admin ALL=(root) NOPASSWD: sha256:$SHASUM $KANATA_BIN
-            EOF
-          '';
 
           security.pam.services.sudo_local.touchIdAuth = true;
 
@@ -214,7 +214,7 @@
               bottom_padding = 12;
               left_padding = 12;
               right_padding = 12;
-              external_bar = "all:40:0";
+              # external_bar = "all:40:0";
               window_gap = 12;
               # menubar_opacity = 0.0;
             };
@@ -244,6 +244,7 @@
                   "Karabiner"
                   "AlDente"
                   "CleanMyMac"
+                  "qemu-system-aarch64"
                 ];
               in
               ''
@@ -281,33 +282,33 @@
             skhdConfig = builtins.readFile ./skhdrc;
           };
 
-          system.defaults.NSGlobalDomain._HIHideMenuBar = true;
+          system.defaults.NSGlobalDomain._HIHideMenuBar = false;
 
-          launchd.user.agents.sketchybar = {
-            path =
-              with pkgs;
-              [
-                lua54Packages.lua
-                switchaudio-osx
-                nowplaying-cli
-                lua54Packages.cjson
-              ]
-              ++ [ config.environment.systemPath ];
-            environment = {
-              LUA_CPATH = "${pkgs.lua54Packages.cjson}/lib/lua/5.4/?.so;${pkgs.sbarlua}/lib/lua/5.4/sketchybar.so;$LUA_CPATH";
-            };
-            serviceConfig.ProgramArguments = [
-              "${pkgs.sketchybar}/bin/sketchybar"
-              "--config"
-              "${pkgs.sketchybar-helpers}/sketchybarrc"
-            ];
-            serviceConfig = {
-              KeepAlive = true;
-              RunAtLoad = true;
-              StandardErrorPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.out.log";
-              StandardOutPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.err.log";
-            };
-          };
+          # launchd.user.agents.sketchybar = {
+          #   path =
+          #     with pkgs;
+          #     [
+          #       lua54Packages.lua
+          #       switchaudio-osx
+          #       nowplaying-cli
+          #       lua54Packages.cjson
+          #     ]
+          #     ++ [ config.environment.systemPath ];
+          #   environment = {
+          #     LUA_CPATH = "${pkgs.lua54Packages.cjson}/lib/lua/5.4/?.so;${pkgs.sbarlua}/lib/lua/5.4/sketchybar.so;$LUA_CPATH";
+          #   };
+          #   serviceConfig.ProgramArguments = [
+          #     "${pkgs.sketchybar}/bin/sketchybar"
+          #     "--config"
+          #     "${pkgs.sketchybar-helpers}/sketchybarrc"
+          #   ];
+          #   serviceConfig = {
+          #     KeepAlive = true;
+          #     RunAtLoad = true;
+          #     StandardErrorPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.out.log";
+          #     StandardOutPath = "/Users/peam/Library/Logs/org.nixos.sketchybar/sketchybar.err.log";
+          #   };
+          # };
         };
     in
     {
@@ -320,6 +321,19 @@
             home-manager.useUserPackages = true;
             users.users.peam.home = "/Users/peam";
             home-manager.users.peam = ./home-manager/home.nix;
+          }
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              # Install Homebrew under the default prefix
+              enable = true;
+
+              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+              enableRosetta = true;
+
+              # User owning the Homebrew prefix
+              user = "peam";
+            };
           }
         ];
       };
