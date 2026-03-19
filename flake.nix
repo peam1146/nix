@@ -118,6 +118,7 @@
               "tw93/tap/mole"
               "k1LoW/tap/git-wt"
               "max-sixty/worktrunk/wt"
+              "cloudflared"
             ];
 
             casks = [
