@@ -166,7 +166,6 @@ in
       g = "git";
       tableplus = "open -a TablePlus";
       k = "kubectl";
-      claude = "zai";
     };
 
     dirHashes = {

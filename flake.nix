@@ -117,8 +117,8 @@
               "ariga/tap/atlas"
               "tw93/tap/mole"
               "k1LoW/tap/git-wt"
-              "max-sixty/worktrunk/wt"
-              "cloudflared"
+              "worktrunk"
+              "ollama"
             ];
 
             casks = [
@@ -143,6 +143,7 @@
               "sf-symbols"
               "font-sf-mono"
               "font-sf-pro"
+              "claude"
             ];
           };
 
@@ -170,7 +171,7 @@
           security.pam.services.sudo_local.touchIdAuth = true;
 
           services.jankyborders = {
-            enable = true;
+            enable = false;
             style = "round";
             width = 6.0;
             hidpi = true;
