@@ -37,8 +37,17 @@
   )
 )
 
+(deflayer bypass
+  _  _  _  _  _  _  _  _  _  _  _  _  @f12on
+  _  _  _  _  _  _  _  _  _  _  _  _  _  _
+  _  _  _  _  _  _  _  _  _  _  _  _  _  _
+  _  _  _  _  _  _  _  _  _  _  _  _  _
+  _  _  _  _  _  _  _  _  _  _  _  _  _
+  _  _  _  _              _              _  _  _  _  _
+)
+
 (deflayer base
-  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    @f12off
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   esc  @a   @s   @d   @f   _    _   @j   @k   @l   @;   _    _
@@ -81,4 +90,9 @@
   l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) ralt $right-hand-keys)
   ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rmet $right-hand-keys)
   lmetarr (tap-hold $tap-time $hold-time enter @arr)
+)
+
+(defalias
+  f12off (tap-hold 200 200 f12 (layer-switch bypass))
+  f12on  (tap-hold 200 200 f12 (layer-switch base))
 )

@@ -33,7 +33,7 @@
             neovim
             nixd
             nixfmt
-            neofetch
+            fastfetch
             lsd
             gh
             git-town
@@ -60,7 +60,6 @@
             httpie
             watch
             uv
-            vscode
           ];
 
           nixpkgs.config.allowUnfree = true;
@@ -157,6 +156,8 @@
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
+
+          # nixpkgs.config.allowUnsupportedSystem = true;
 
           launchd.daemons.kanata = {
             command = "${pkgs.kanata}/bin/kanata --cfg ${./home-row-mod-advanced.kbd}";
