@@ -144,6 +144,7 @@
               "font-sf-pro"
               # "claude"
               "cursor"
+              "openlens"
             ];
           };
 
