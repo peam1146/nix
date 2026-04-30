@@ -60,6 +60,9 @@
             httpie
             watch
             uv
+            ngrok
+            kubeseal
+            obsidian
           ];
 
           nixpkgs.config.allowUnfree = true;
@@ -118,6 +121,7 @@
               "k1LoW/tap/git-wt"
               "worktrunk"
               "ollama"
+              "rtk"
             ];
 
             casks = [

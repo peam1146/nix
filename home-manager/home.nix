@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   username = "peam";
 in
@@ -63,6 +68,15 @@ in
     PERL_MB_OPT = "--install_base \"$HOME/perl5\"";
     PERL_MM_OPT = "INSTALL_BASE=$HOME/perl5";
   };
+
+  # Volta shims under ~/.volta/bin point at ${pkgs.volta}/bin/volta-shim; after
+  # nix-collect-garbage or a Volta bump those store paths disappear while PATH
+  # still lists ~/.volta/bin, so `node` breaks until shims are relinked.
+  home.activation.relinkVoltaShims = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [[ -d "''${HOME}/.volta" ]]; then
+      $DRY_RUN_CMD ${pkgs.volta}/bin/volta setup
+    fi
+  '';
 
   home.sessionPath = [
     "/run/current-system/sw/bin"
