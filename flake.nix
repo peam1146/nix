@@ -63,6 +63,7 @@
             ngrok
             kubeseal
             obsidian
+            atuin
           ];
 
           nixpkgs.config.allowUnfree = true;
@@ -122,6 +123,9 @@
               "worktrunk"
               "ollama"
               "rtk"
+              "temporal"
+              "cilium-cli"
+              "hubble"
             ];
 
             casks = [
@@ -262,8 +266,6 @@
                 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
                 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
                 yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
-
-                ${builtins.readFile ./scripts/ensure_yabai_space.sh}
 
                 # ## move some apps automatically to specific spaces
                 yabai -m space 1 --label "Browser"

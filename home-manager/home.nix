@@ -50,7 +50,7 @@ in
   # ];
 
   home.sessionVariables = {
-    EDITOR = "windsurf";
+    EDITOR = "cursor";
     GOPATH = "$HOME/go";
     GOBIN = "$HOME/go/bin";
     GPG_TTY = "$(tty)";
