@@ -149,14 +149,14 @@ in
     zinit = {
       enable = true;
       plugins = [
-        "joshskidmore/zsh-fzf-history-search"
+        # "joshskidmore/zsh-fzf-history-search"
         "hlissner/zsh-autopair"
         "akash329d/zsh-alias-finder"
         "chitoku-k/fzf-zsh-completions"
-        {
-          repo = "marlonrichert/zsh-autocomplete";
-          wait = null;
-        }
+        # {
+        #   repo = "marlonrichert/zsh-autocomplete";
+        #   wait = null;
+        # }
       ];
     };
 
@@ -165,6 +165,8 @@ in
       source $HOME/.secret.sh
 
       eval "$(wt config shell init zsh)"
+
+      eval "$(${pkgs.atuin}/bin/atuin init zsh)"
 
       # create hash for all directory in work
       for d in $HOME/work/*; do
