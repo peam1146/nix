@@ -267,8 +267,9 @@
                 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
                 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
                 yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
+                yabai -m rule --add label="Notion Calendar" app="^Notion Calendar$" manage=off sticky=on
 
-                # ## move some apps automatically to specific spaces
+                # move some apps automatically to specific spaces
                 yabai -m space 1 --label "Browser"
                 yabai -m space 2 --label "Terminal"
                 yabai -m space 3 --label "Coding"
@@ -280,6 +281,7 @@
                 yabai -m rule --add app="WezTerm" space=2
                 yabai -m rule --add app="Ghostty" space=2
                 yabai -m rule --add app="Code" space=3
+                yabai -m rule --add app="Cursor" space=3
                 yabai -m rule --add app="Windsurf" space=3
                 yabai -m rule --add app="Zed" space=3
                 yabai -m rule --add app="Discord" space=4
