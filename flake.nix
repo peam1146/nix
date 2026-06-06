@@ -126,6 +126,7 @@
               "temporal"
               "cilium-cli"
               "hubble"
+              "gleam"
             ];
 
             casks = [
