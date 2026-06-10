@@ -96,6 +96,7 @@ in
     "$HOME/.antigravity/antigravity/bin"
     "$HOME/perl5/bin"
     "$HOME/.lmstudio/bin"
+    "$HOME/.cargo/bin"
   ];
 
   programs.home-manager.enable = true;
