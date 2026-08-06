@@ -8,6 +8,7 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    flake-skills.url = "github:peam1146/flake-vercel-skills";
   };
 
   outputs =
@@ -17,6 +18,7 @@
       nixpkgs,
       home-manager,
       nix-homebrew,
+      flake-skills,
     }:
     let
       configuration =
@@ -64,6 +66,53 @@
             kubeseal
             obsidian
             atuin
+            k9s
+            kubectx
+            (python3.withPackages (
+              ps: with ps; [
+                pip
+                setuptools
+                (buildPythonPackage rec {
+                  pname = "headroom-ai";
+                  version = "0.28.0";
+                  # ponytail: prebuilt wheel — source build needs a native (abi3) toolchain
+                  format = "wheel";
+
+                  src = fetchPypi {
+                    pname = "headroom_ai";
+                    inherit version format;
+                    dist = "cp310";
+                    python = "cp310";
+                    abi = "abi3";
+                    platform = "macosx_11_0_arm64";
+                    hash = "sha256-MdOygOc2aiP1QDTeFfUlw2duGFRkyqToaWzYziutn6Y=";
+                  };
+
+                  dependencies = [
+                    tiktoken
+                    pydantic
+                    litellm
+                    click
+                    rich
+                    opentelemetry-api
+                  ];
+
+                  # ponytail: ast-grep-cli has no nixpkgs python package; pkgs.ast-grep below provides the binary
+                  pythonRemoveDeps = [ "ast-grep-cli" ];
+                  # ponytail: nixpkgs litellm (1.83) is behind the >=1.86.2 pin; drop the relax when nixpkgs catches up
+                  pythonRelaxDeps = [ "litellm" ];
+
+                  pythonImportsCheck = [ "headroom" ];
+
+                  meta = {
+                    description = "Context compression layer for AI agents and LLM applications";
+                    homepage = "https://github.com/headroomlabs-ai/headroom";
+                    license = pkgs.lib.licenses.asl20;
+                  };
+                })
+              ]
+            ))
+            ast-grep
           ];
 
           nixpkgs.config.allowUnfree = true;
@@ -114,19 +163,18 @@
               "gpg2" # GNU Privacy Guard version 2
               "gnupg" # Complete GNU Privacy Guard suite
               "pinentry-mac" # GPG passphrase entry dialog for macOS
-              "pinentry-touchid" # GPG passphrase entry using Touch ID
+              # "pinentry-touchid" # GPG passphrase entry using Touch ID
               "cocoapods" # Dependency manager for iOS/macOS projects
               "asdf" # Version manager for Elixir
               "ariga/tap/atlas"
               "tw93/tap/mole"
               "k1LoW/tap/git-wt"
               "worktrunk"
-              "ollama"
               "rtk"
-              "temporal"
-              "cilium-cli"
-              "hubble"
               "gleam"
+              "modem-dev/tap/hunk"
+              "herdr"
+              "typst"
             ];
 
             casks = [
@@ -134,7 +182,7 @@
               "basecamp" # Project management and collaboration tool
               "font-hack-nerd-font" # Hack font with Nerd Font icons
               "karabiner-elements" # Keyboard customization and remapping tool
-              "spotify" # Music streaming service
+              # "spotify" # Music streaming service
               "discord" # Voice and text chat platform
               "figma" # Collaborative design and prototyping tool
               "1password" # Password manager and secure wallet
@@ -153,8 +201,10 @@
               "font-sf-pro"
               # "claude"
               "cursor"
-              "openlens"
-              "antigravity"
+              # "antigravity"
+              # "claude"
+              "codex"
+              "tailscale-app"
             ];
           };
 
@@ -335,6 +385,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             users.users.peam.home = "/Users/peam";
+            home-manager.extraSpecialArgs = {
+              inherit flake-skills;
+            };
             home-manager.users.peam = ./home-manager/home.nix;
           }
           nix-homebrew.darwinModules.nix-homebrew

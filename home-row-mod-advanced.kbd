@@ -93,6 +93,6 @@
 )
 
 (defalias
-  f12off (tap-hold 200 200 f12 (layer-switch bypass))
   f12on  (tap-hold 200 200 f12 (layer-switch base))
+  f12off (tap-hold 200 200 f12 (layer-switch bypass))
 )

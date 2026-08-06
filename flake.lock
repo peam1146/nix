@@ -17,7 +17,47 @@
         "type": "github"
       }
     },
+    "flake-skills": {
+      "inputs": {
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1785999867,
+        "narHash": "sha256-66ewN6YEjyZrpRjCjFo7DEyLoh4pg8FyK40MDIqfgHQ=",
+        "owner": "peam1146",
+        "repo": "flake-vercel-skills",
+        "rev": "46ddb9c00fb30dd953ded959a28f0a2610710951",
+        "type": "github"
+      },
+      "original": {
+        "owner": "peam1146",
+        "repo": "flake-vercel-skills",
+        "type": "github"
+      }
+    },
     "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "flake-skills",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785958398,
+        "narHash": "sha256-5r/JgsoNMTx+qIh83WkxpujEKBR7PF5ssnh5vYCuSAw=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "a7c70cc290290f373f50cd820403833d250459ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -78,6 +118,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1785828668,
+        "narHash": "sha256-8fsyqeO+mJqvIzeO4xIpgJe/f7MTbbVTEC6RT6WSXNs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e72e4f299401a3689d4b3d5fc6496b11db7064eb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1778869304,
         "narHash": "sha256-30sZNZoA1cqF5JNO9fVX+wgiQYjB7HJqqJ4ztCDeBZE=",
         "owner": "NixOS",
@@ -94,10 +150,11 @@
     },
     "root": {
       "inputs": {
-        "home-manager": "home-manager",
+        "flake-skills": "flake-skills",
+        "home-manager": "home-manager_2",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },

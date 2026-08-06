@@ -1,5 +1,8 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
+# Xcode-bundled cc/gcc/clang take ~1.3s to report --version; default 500ms times out.
+command_timeout = 2000
+
 [bun]
 format = '\[[$symbol($version)]($style)\]'
 

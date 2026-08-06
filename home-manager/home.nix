@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  flake-skills,
   ...
 }:
 let
@@ -10,6 +11,8 @@ in
 {
   imports = [
     ../modules/zinit
+    ./skills.nix
+    flake-skills.homeManagerModules.default
   ];
 
   home.username = username;
@@ -154,10 +157,10 @@ in
         "hlissner/zsh-autopair"
         "akash329d/zsh-alias-finder"
         "chitoku-k/fzf-zsh-completions"
-        # {
-        #   repo = "marlonrichert/zsh-autocomplete";
-        #   wait = null;
-        # }
+        {
+          repo = "marlonrichert/zsh-autocomplete";
+          wait = null;
+        }
       ];
     };
 
@@ -182,6 +185,7 @@ in
       reload = "source ~/.zshrc && echo 'Reloaded ~/.zshrc'";
       g = "git";
       tableplus = "open -a TablePlus";
+      cc = ''open "claude://session/new?cwd=$(pwd)"'';
       k = "kubectl";
     };
 
