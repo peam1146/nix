@@ -8,7 +8,7 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    flake-skills.url = "github:peam1146/flake-vercel-skills";
+    flake-skills.url = "github:peam1146/flake-vercel-skills/21267da5dc5ddcdba40c89dee0a457adf107c437";
   };
 
   outputs =

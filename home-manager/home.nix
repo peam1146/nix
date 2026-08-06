@@ -11,8 +11,8 @@ in
 {
   imports = [
     ../modules/zinit
-    ./skills.nix
     flake-skills.homeManagerModules.default
+    ./skills.nix
   ];
 
   home.username = username;

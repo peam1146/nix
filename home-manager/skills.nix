@@ -1,14 +1,14 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.skills-cli = {
     enable = true;
     sources = [
-      {
-        repo = "git@github.com:softnetics/os.git";
-        skills = [
-          "far-blame"
-        ];
-      }
+      # {
+      #   repo = "git@github.com:softnetics/os.git";
+      #   skills = [
+      #     "far-blame"
+      #   ];
+      # }
       {
         repo = "mattpocock/skills#main";
         skills = [

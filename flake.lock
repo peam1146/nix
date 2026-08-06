@@ -23,16 +23,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1785999867,
-        "narHash": "sha256-66ewN6YEjyZrpRjCjFo7DEyLoh4pg8FyK40MDIqfgHQ=",
+        "lastModified": 1786005281,
+        "narHash": "sha256-bGBWbOPhrz7ZXpG4giejZxIFnq1LCeLjmUjfxNAiy3Y=",
         "owner": "peam1146",
         "repo": "flake-vercel-skills",
-        "rev": "46ddb9c00fb30dd953ded959a28f0a2610710951",
+        "rev": "21267da5dc5ddcdba40c89dee0a457adf107c437",
         "type": "github"
       },
       "original": {
         "owner": "peam1146",
         "repo": "flake-vercel-skills",
+        "rev": "21267da5dc5ddcdba40c89dee0a457adf107c437",
         "type": "github"
       }
     },
